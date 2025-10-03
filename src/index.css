@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+:root {
+  --radius: 0.5rem;
+  --background: hsl(248, 70%, 36%);
+  --primary: hsl(233, 67%, 56%);
+  --primary-foreground: hsl(243, 96%, 9%);
+  --secondary: hsl(243, 23%, 24%);
+  --secondary-foreground: hsl(243, 27%, 20%);
+  --accent: hsl(243, 23%, 30%);
+  --muted: hsl(240, 6%, 70%);
+  --muted-foreground: hsl(250, 6%, 84%);
+}
