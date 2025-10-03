@@ -13,6 +13,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --default-font-family: "DM Sans", sans-serif;
+  --font-Bricolage: "Bricolage Grotesque", sans-serif;
 }
 :root {
   --radius: 0.5rem;
