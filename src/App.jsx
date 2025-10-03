@@ -1,5 +1,11 @@
+import Header from "./components/Header";
+
 function App() {
-  return <></>;
+  return (
+    <div className="bg-background">
+      <Header />
+    </div>
+  );
 }
 
 export default App;
