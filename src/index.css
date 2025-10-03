@@ -27,3 +27,29 @@
   --muted: hsl(240, 6%, 70%);
   --muted-foreground: hsl(250, 6%, 84%);
 }
+
+.scroll-color {
+  --sb-track-color: hsl(243, 23%, 30%);
+  --sb-thumb-color: hsl(233, 67%, 56%);
+  --sb-size: 8px;
+}
+
+.scroll-color::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.scroll-color::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 45px;
+}
+
+.scroll-color::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 45px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .scroll-color {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}

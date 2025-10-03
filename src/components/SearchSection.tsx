@@ -1,6 +1,6 @@
 export default function SearchSection() {
   return (
-    <section className="text-white p-4 my-6 space-y-6">
+    <section className="text-white p-4 my-6 space-y-10">
       <h1 className="text-6xl font-Bricolage text-center">
         How's the sky looking today?
       </h1>
