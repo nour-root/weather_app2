@@ -3,7 +3,7 @@ export default function HourlyWeather() {
     <div className="md:w-1/3 h-fit p-4 bg-secondary rounded-lg text-white space-y-7">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Hourly Forecast</h2>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent">
+        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent hover:bg-muted/20">
           <span>Tuesday</span>
           <img src="/assets/images/icon-dropdown.svg" alt="" />
         </button>
