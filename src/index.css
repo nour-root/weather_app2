@@ -53,3 +53,29 @@
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
+.custom-dropdown-menu .ant-dropdown-menu,
+.custom-dropdown-menu2 .ant-dropdown-menu {
+  @apply bg-secondary-foreground rounded-lg !space-y-2 mt-1 py-2;
+}
+.ant-dropdown-menu-item-group-list {
+  @apply !space-y-1;
+}
+.custom-dropdown-menu .ant-dropdown-menu {
+  @apply w-[230px];
+}
+.custom-dropdown-menu2 .ant-dropdown-menu {
+  @apply w-[200px];
+}
+.custom-dropdown-menu2 .ant-dropdown-menu .ant-dropdown-menu-item {
+  @apply !text-white hover:!bg-muted/20 cursor-pointer !bg-transparent !text-[16px];
+}
+.custom-dropdown-menu .ant-dropdown-menu-item {
+  @apply !text-white hover:!bg-muted/20 cursor-pointer !bg-transparent !text-[16px];
+}
+
+.custom-dropdown-menu .ant-dropdown-menu-item-disabled {
+  @apply text-gray-500 hover:!bg-transparent !cursor-default;
+}
+.custom-dropdown-menu .ant-dropdown-menu-item-divider {
+  @apply border-t border-accent my-2;
+}

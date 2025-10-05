@@ -5,7 +5,7 @@ export default function ForecastDailyWeather() {
       <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-7">
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
@@ -13,7 +13,7 @@ export default function ForecastDailyWeather() {
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
@@ -21,7 +21,7 @@ export default function ForecastDailyWeather() {
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
@@ -29,7 +29,7 @@ export default function ForecastDailyWeather() {
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
@@ -37,7 +37,7 @@ export default function ForecastDailyWeather() {
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
@@ -45,7 +45,7 @@ export default function ForecastDailyWeather() {
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
@@ -53,7 +53,7 @@ export default function ForecastDailyWeather() {
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
           <p className="capitalize text-lg">Tue</p>
-          <img src="/public/assets/images/icon-partly-cloudy.webp" alt="" />
+          <img src="/assets/images/icon-partly-cloudy.webp" alt="" />
           <div className="flex justify-between items-center w-full text-lg">
             <p>20°</p>
             <p>14°</p>
