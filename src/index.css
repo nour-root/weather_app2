@@ -79,3 +79,6 @@
 .custom-dropdown-menu .ant-dropdown-menu-item-divider {
   @apply border-t border-accent my-2;
 }
+.ant-skeleton .ant-skeleton-image {
+  @apply !w-full !h-full;
+}
