@@ -12,7 +12,6 @@ export default function Weather() {
   const [daily, setDaily] = useState({});
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const [days, setDays] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -27,7 +26,6 @@ export default function Weather() {
           setCurrent(data.data.current);
           setHourly(data.data.hourly);
           setDaily(data.data.daily);
-          setDays(data.data.daily.time);
         })
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
@@ -43,7 +41,7 @@ export default function Weather() {
         />
         <ForecastDailyWeather Daily={daily} />
       </div>
-      <HourlyWeather Hourly={hourly} days={days} />
+      <HourlyWeather Hourly={hourly} />
     </div>
   );
 }

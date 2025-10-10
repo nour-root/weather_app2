@@ -1,34 +1,120 @@
 import { Dropdown } from "antd";
 import getImage from "../helper/getImage";
 import { useLoading } from "../shared/LoadingContext";
+import { useState } from "react";
 
-export default function HourlyWeather({ Hourly, days }) {
+export default function HourlyWeather({ Hourly }) {
+  //hour for current day  0 -> 23 : 24i
+  //hour for next day 24i -> 24(i+1) - 1
+
   const { isLoading } = useLoading();
-  const times = Hourly?.time
-    ? Array.from(Hourly.time).slice(8, 20).reverse()
-    : [];
-  const temps = Hourly.apparent_temperature;
-  const codes = Hourly.weather_code;
 
-  const formatterUS = new Intl.DateTimeFormat("en-US", { weekday: "long" });
+  const temps = Hourly.temperature_2m ? Array.from(Hourly.temperature_2m) : [];
+  const times = Hourly?.time ? Array.from(Hourly.time) : [];
+  const codes = Hourly.weather_code ? Array.from(Hourly.weather_code) : [];
+  const dayFormatter = new Intl.DateTimeFormat("en-US", { weekday: "long" });
   const timeFormatter = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     hour12: true,
   });
 
+  const formatDate = (date) => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const hh = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+  };
+
+  const days = Array(7)
+    .fill(null)
+    .map((_, i) => {
+      const day = new Date();
+      day.setDate(day.getDate() + i);
+      return formatDate(day);
+    });
+
   const validDays = days
     .map((d) => {
       const date = new Date(d);
-      return isNaN(date) ? null : date;
+      return date;
     })
     .filter(Boolean);
 
-  const today = formatterUS.format(validDays[0]);
-
-  const items = validDays.slice(1).map((d) => {
-    const day = formatterUS.format(d);
-    return { label: <p className="capitalize">{day}</p>, key: day };
+  const [day1, setDay] = useState({
+    index: 0,
+    day: dayFormatter.format(validDays[0]),
   });
+
+  let items;
+  if (day1.index === 0) {
+    items = validDays
+      .map((d, i) => {
+        const day = dayFormatter.format(d);
+        return {
+          label: (
+            <p
+              onClick={() => {
+                setDay({ index: i, day: day });
+              }}
+              className="capitalize"
+              aria-valuetext={i}
+            >
+              {day}
+            </p>
+          ),
+          key: i,
+        };
+      })
+      .slice(1);
+  } else {
+    items = validDays.map((d, i) => {
+      const day = dayFormatter.format(d);
+      return {
+        label: (
+          <p
+            onClick={() => {
+              setDay({ index: i, day: day });
+            }}
+            className="capitalize"
+            aria-valuetext={i}
+          >
+            {day}
+          </p>
+        ),
+        key: i,
+      };
+    });
+  }
+  function getHourlyDay(indexDay) {
+    let currentDay = 24 * indexDay;
+    let nextDay = Math.min(24 * (indexDay + 1) - 1, times.length);
+    const dayTimes = times.slice(currentDay, nextDay);
+    const dayTemps = temps.slice(currentDay, nextDay);
+    const dayCodes = codes.slice(currentDay, nextDay);
+    return dayTimes.map((timeValue, i) => {
+      if (!timeValue) return null;
+
+      const date = new Date(timeValue);
+      const hourLabel = timeFormatter.format(date);
+      const temp = Math.round(Number(dayTemps[i]));
+      const icon = getImage(dayCodes[i]);
+
+      return (
+        <div
+          key={currentDay + i}
+          className="flex justify-between items-center px-2 w-full bg-accent mr-2 rounded-lg"
+        >
+          <div className="flex items-center">
+            <img src={icon} className="size-15" alt="" />
+            <p className="capitalize">{hourLabel}</p>
+          </div>
+          <p>{temp}°</p>
+        </div>
+      );
+    });
+  }
 
   if (isLoading) {
     return (
@@ -46,7 +132,7 @@ export default function HourlyWeather({ Hourly, days }) {
           </Dropdown>
         </div>
         <div className="flex flex-col items-center gap-4 max-h-[450px] overflow-x-hidden overflow-y-auto p-2 scroll-color">
-          {Array.from({ length: 11 }).map((_, i) => {
+          {Array.from({ length: 12 }).map((_, i) => {
             return (
               <div
                 key={i}
@@ -68,30 +154,13 @@ export default function HourlyWeather({ Hourly, days }) {
             overlayClassName="custom-dropdown-menu2"
           >
             <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent hover:bg-muted/20 cursor-pointer">
-              <span>{today}</span>
+              <span aria-valuetext={day1.index}>{day1.day}</span>
               <img src="/assets/images/icon-dropdown.svg" alt="" />
             </button>
           </Dropdown>
         </div>
         <div className="flex flex-col items-center gap-4 max-h-[450px] overflow-x-hidden overflow-y-auto p-2 scroll-color">
-          {times.map((t, i) => {
-            const date = new Date(t);
-            const hourLabel = timeFormatter.format(date);
-            const temp = Math.round(Number.parseFloat(temps[i]));
-            const icon = getImage(codes[i]);
-            return (
-              <div
-                key={i}
-                className="flex justify-between items-center px-2 w-full bg-accent mr-2 rounded-lg"
-              >
-                <div className="flex items-center">
-                  <img src={icon} className="size-15" alt="" />
-                  <p className="capitalize">{hourLabel}</p>
-                </div>
-                <p>{temp}°</p>
-              </div>
-            );
-          })}
+          {getHourlyDay(day1.index)}
         </div>
       </div>
     );
