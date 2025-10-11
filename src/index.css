@@ -66,6 +66,7 @@
 .custom-dropdown-menu2 .ant-dropdown-menu {
   @apply w-[200px];
 }
+
 .custom-dropdown-menu2 .ant-dropdown-menu .ant-dropdown-menu-item {
   @apply !text-white hover:!bg-muted/20 cursor-pointer !bg-transparent !text-[16px];
 }

@@ -18,38 +18,22 @@ export default function HourlyWeather({ Hourly }) {
     hour12: true,
   });
 
-  const formatDate = (date) => {
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-    const hh = String(date.getHours()).padStart(2, "0");
-    const min = String(date.getMinutes()).padStart(2, "0");
-    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
-  };
-
   const days = Array(7)
     .fill(null)
     .map((_, i) => {
       const day = new Date();
       day.setDate(day.getDate() + i);
-      return formatDate(day);
+      return day;
     });
-
-  const validDays = days
-    .map((d) => {
-      const date = new Date(d);
-      return date;
-    })
-    .filter(Boolean);
 
   const [day1, setDay] = useState({
     index: 0,
-    day: dayFormatter.format(validDays[0]),
+    day: dayFormatter.format(days[0]),
   });
 
   let items;
   if (day1.index === 0) {
-    items = validDays
+    items = days
       .map((d, i) => {
         const day = dayFormatter.format(d);
         return {
@@ -69,7 +53,7 @@ export default function HourlyWeather({ Hourly }) {
       })
       .slice(1);
   } else {
-    items = validDays.map((d, i) => {
+    items = days.map((d, i) => {
       const day = dayFormatter.format(d);
       return {
         label: (
@@ -90,30 +74,49 @@ export default function HourlyWeather({ Hourly }) {
   function getHourlyDay(indexDay) {
     let currentDay = 24 * indexDay;
     let nextDay = Math.min(24 * (indexDay + 1) - 1, times.length);
-    const dayTimes = times.slice(currentDay, nextDay);
-    const dayTemps = temps.slice(currentDay, nextDay);
-    const dayCodes = codes.slice(currentDay, nextDay);
-    return dayTimes.map((timeValue, i) => {
-      if (!timeValue) return null;
-
-      const date = new Date(timeValue);
-      const hourLabel = timeFormatter.format(date);
-      const temp = Math.round(Number(dayTemps[i]));
-      const icon = getImage(dayCodes[i]);
-
-      return (
-        <div
-          key={currentDay + i}
-          className="flex justify-between items-center px-2 w-full bg-accent mr-2 rounded-lg"
-        >
-          <div className="flex items-center">
-            <img src={icon} className="size-15" alt="" />
-            <p className="capitalize">{hourLabel}</p>
-          </div>
-          <p>{temp}°</p>
+    let elements = [];
+    for (let i = currentDay; i < nextDay; i++) {
+      let hour = timeFormatter.format(new Date(times[i]));
+      let temp = temps[i];
+      let icon = codes[i];
+      elements.push({ icon, hour, temp });
+    }
+    return elements.map((el, i) => (
+      <div
+        key={currentDay + i}
+        className="flex justify-between items-center px-2 w-full bg-accent mr-2 rounded-lg"
+      >
+        <div className="flex items-center">
+          <img src={getImage(el.icon)} className="size-15" alt="" />
+          <p className="capitalize">{el.hour}</p>
         </div>
-      );
-    });
+        <p>{Math.round(Number(el.temp))}°</p>
+      </div>
+    ));
+    // const dayTimes = times.slice(currentDay, nextDay);
+    // const dayTemps = temps.slice(currentDay, nextDay);
+    // const dayCodes = codes.slice(currentDay, nextDay);
+    // return dayTimes.map((timeValue, i) => {
+    //   if (!timeValue) return null;
+
+    //   const date = new Date(timeValue);
+    //   const hourLabel = timeFormatter.format(date);
+    //   const temp = Math.round(Number(dayTemps[i]));
+    //   const icon = getImage(dayCodes[i]);
+
+    //   return (
+    //     <div
+    //       key={currentDay + i}
+    //       className="flex justify-between items-center px-2 w-full bg-accent mr-2 rounded-lg"
+    //     >
+    //       <div className="flex items-center">
+    //         <img src={icon} className="size-15" alt="" />
+    //         <p className="capitalize">{hourLabel}</p>
+    //       </div>
+    //       <p>{temp}°</p>
+    //     </div>
+    //   );
+    // });
   }
 
   if (isLoading) {
@@ -123,6 +126,8 @@ export default function HourlyWeather({ Hourly }) {
           <h2 className="text-lg font-semibold">Hourly Forecast</h2>
           <Dropdown
             trigger={["click"]}
+            disabled={isLoading}
+            className="disabled:hover:!bg-transparent disabled:!pointer-events-none disabled:cursor-default"
             overlayClassName="custom-dropdown-menu2"
           >
             <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent hover:bg-muted/20 cursor-pointer">
@@ -132,7 +137,7 @@ export default function HourlyWeather({ Hourly }) {
           </Dropdown>
         </div>
         <div className="flex flex-col items-center gap-4 max-h-[450px] overflow-x-hidden overflow-y-auto p-2 scroll-color">
-          {Array.from({ length: 12 }).map((_, i) => {
+          {Array.from({ length: 24 }).map((_, i) => {
             return (
               <div
                 key={i}
@@ -151,6 +156,7 @@ export default function HourlyWeather({ Hourly }) {
           <Dropdown
             menu={{ items }}
             trigger={["click"]}
+            disabled={isLoading}
             overlayClassName="custom-dropdown-menu2"
           >
             <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent hover:bg-muted/20 cursor-pointer">
