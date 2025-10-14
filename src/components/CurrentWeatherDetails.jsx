@@ -54,7 +54,7 @@ export default function CurrentWeatherDetails({
       return Math.floor(mm);
     }
   };
-  console.log(ConvertUnitPrecipitation(current.precipitation));
+
   return (
     <div className="flex flex-col gap-8 text-white w-full">
       {isLoading ? (
