@@ -1,11 +1,33 @@
 import { CheckOutlined } from "@ant-design/icons";
 import { Dropdown } from "antd";
+import { useUnit } from "../shared/Unit";
+import { Activity, useState } from "react";
 
 export default function Header() {
+  const { nameUnit, setNameUnit, setUnit, unit } = useUnit();
+  const [name, setName] = useState("imperial");
+
+  function SwitchTOUnit() {
+    if (name === "imperial") {
+      setNameUnit("imperial");
+      setName("metric");
+      setUnit({ temp: "F", wind: "mp/h", precipitation: "inch" });
+    } else {
+      setNameUnit("metric");
+      setName("imperial");
+      setUnit({ temp: "C", wind: "km/h", precipitation: "mm" });
+    }
+  }
+
   const items = [
     {
       label: (
-        <p className="font-semibold text-[16px] mb-1">Switch to imperial</p>
+        <p
+          onClick={() => SwitchTOUnit()}
+          className="font-semibold text-[16px] mb-1"
+        >
+          Switch to {name}
+        </p>
       ),
       key: "imperial",
     },
@@ -16,17 +38,44 @@ export default function Header() {
       children: [
         {
           label: (
-            <div className="flex justify-between items-center">
-              <span>Celsius (°C)</span>
-              <CheckOutlined />
+            <div
+              onClick={() => {
+                setUnit({ ...unit, temp: "C" });
+              }}
+              className="flex justify-between items-center"
+            >
+              <span>Celsius (&deg; C)</span>
+              <Activity
+                mode={
+                  nameUnit === "metric" && unit.temp === "C"
+                    ? "visible"
+                    : "hidden"
+                }
+              >
+                <CheckOutlined />
+              </Activity>
             </div>
           ),
           key: "celsius",
         },
         {
           label: (
-            <div className="flex justify-between items-center">
-              Fahrenheit (°F)
+            <div
+              onClick={() => {
+                setUnit({ ...unit, temp: "F" });
+              }}
+              className="flex justify-between items-center"
+            >
+              <span>Fahrenheit (&deg;F)</span>
+              <Activity
+                mode={
+                  nameUnit === "imperial" || unit.temp === "F"
+                    ? "visible"
+                    : "hidden"
+                }
+              >
+                <CheckOutlined />
+              </Activity>
             </div>
           ),
           key: "fahrenheit",
@@ -43,15 +92,46 @@ export default function Header() {
       children: [
         {
           label: (
-            <div className="flex justify-between items-center">
+            <div
+              onClick={() => {
+                setUnit({ ...unit, wind: "km/h" });
+              }}
+              className="flex justify-between items-center"
+            >
               <span>km/h</span>
-              <CheckOutlined />
+              <Activity
+                mode={
+                  nameUnit === "metric" && unit.wind === "km/h"
+                    ? "visible"
+                    : "hidden"
+                }
+              >
+                <CheckOutlined />
+              </Activity>
             </div>
           ),
           key: "kmh",
         },
         {
-          label: <div className="flex justify-between items-center">mph</div>,
+          label: (
+            <div
+              onClick={() => {
+                setUnit({ ...unit, wind: "mp/h" });
+              }}
+              className="flex justify-between items-center"
+            >
+              mp/h
+              <Activity
+                mode={
+                  nameUnit === "imperial" || unit.wind === "mp/h"
+                    ? "visible"
+                    : "hidden"
+                }
+              >
+                <CheckOutlined />
+              </Activity>
+            </div>
+          ),
           key: "mph",
         },
       ],
@@ -68,16 +148,45 @@ export default function Header() {
       children: [
         {
           label: (
-            <div className="flex justify-between items-center">
+            <div
+              onClick={() => {
+                setUnit({ ...unit, precipitation: "mm" });
+              }}
+              className="flex justify-between items-center"
+            >
               <span>Millimeters (mm)</span>
-              <CheckOutlined />
+              <Activity
+                mode={
+                  nameUnit === "metric" && unit.precipitation === "mm"
+                    ? "visible"
+                    : "hidden"
+                }
+              >
+                <CheckOutlined />
+              </Activity>
             </div>
           ),
           key: "mm",
         },
         {
           label: (
-            <div className="flex justify-between items-center">Inches (in)</div>
+            <div
+              onClick={() => {
+                setUnit({ ...unit, precipitation: "inch" });
+              }}
+              className="flex justify-between items-center"
+            >
+              Inches (in)
+              <Activity
+                mode={
+                  nameUnit === "imperial" || unit.precipitation === "inch"
+                    ? "visible"
+                    : "hidden"
+                }
+              >
+                <CheckOutlined />
+              </Activity>
+            </div>
           ),
           key: "inches",
         },

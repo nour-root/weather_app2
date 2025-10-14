@@ -1,26 +1,67 @@
 import { Skeleton } from "antd";
 import { useLoading } from "../shared/LoadingContext";
 import getImage from "../helper/getImage";
-export default function CurrentWeatherDetails({ current, country, city }) {
+import { useUnit } from "../shared/Unit";
+export default function CurrentWeatherDetails({
+  current,
+  country,
+  city,
+  current_units,
+}) {
+  //(0°C × 9/5) + 32 = 32°F
+  // speedMph = speedKmH * 0.621371;
   const { isLoading } = useLoading();
-  const timeString = String(current.time).split("T");
-  let time;
-  if (timeString && !isNaN(Date.parse(timeString[0]))) {
-    time = new Date(timeString[0]);
-  }
+  const { unit, nameUnit } = useUnit();
+
+  const time = new Date();
   const formatterUS = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
     weekday: "long",
   });
-  const apparent_temperature = Math.round(
-    Number.parseFloat(current.apparent_temperature)
-  );
+  const apparent_temperature = Math.round(Number(current.apparent_temperature));
+  const ConvertUnitTemp = (unitValue) => {
+    if (unit.temp === "F") {
+      if (nameUnit === "imperial") return unitValue;
+      let temp = (unitValue * 9) / 5 + 32;
+      return Math.floor(Number(temp));
+    } else if (unit.temp === "C") {
+      if (nameUnit === "metric") return unitValue;
+      let temp = ((unitValue - 32) * 5) / 9;
+      return Math.floor(temp);
+    }
+  };
+  const ConvertUnitWind = (unitValue) => {
+    if (unit.wind === "mp/h") {
+      if (nameUnit === "imperial") return unitValue;
+      let wind = unitValue * 0.621371;
+      return Math.floor(wind);
+    } else if (unit.wind === "km/h") {
+      if (nameUnit === "metric") return unitValue;
+      let wind = unitValue * 1.60934;
+      return Math.floor(wind);
+    }
+  };
+  const ConvertUnitPrecipitation = (unitValue) => {
+    if (unit.precipitation === "mm") {
+      if (nameUnit === "imperial") return unitValue;
+      let inch = unitValue * 0.0393701;
+      return Math.floor(inch);
+    } else if (unit.precipitation === "inch") {
+      if (nameUnit === "metric") return unitValue;
+      let mm = unitValue * 25.4;
+      return Math.floor(mm);
+    }
+  };
+  console.log(ConvertUnitPrecipitation(current.precipitation));
   return (
     <div className="flex flex-col gap-8 text-white w-full">
       {isLoading ? (
-        <Skeleton.Node className="bg-secondary w-full h-[380px] rounded-2xl text-white">
+        <Skeleton.Node
+          active
+          className="bg-secondary w-full h-[380px] rounded-2xl text-white"
+        >
           <div className="flex flex-col items-center justify-center space-y-4">
             <img
               src="/assets/images/icon-loading.svg"
@@ -55,7 +96,7 @@ export default function CurrentWeatherDetails({ current, country, city }) {
                 alt=""
               />
               <p className="lg:text-8xl text-6xl italic font-semibold">
-                {parseInt(current.temperature_2m)}°
+                {Math.round(Number(current.temperature_2m))}°
               </p>
             </div>
           </div>
@@ -68,7 +109,11 @@ export default function CurrentWeatherDetails({ current, country, city }) {
             {isLoading ? (
               <div className="bg-white h-0.5 w-4 mt-10"></div>
             ) : (
-              <p className="text-2xl">{apparent_temperature}°</p>
+              <p className="text-2xl">
+                {ConvertUnitTemp(apparent_temperature) +
+                  " " +
+                  (unit.temp === "C" ? "°C" : "°F")}
+              </p>
             )}
           </div>
         }
@@ -77,7 +122,11 @@ export default function CurrentWeatherDetails({ current, country, city }) {
           {isLoading ? (
             <div className="bg-white h-0.5 w-4 mt-10"></div>
           ) : (
-            <p className="text-2xl">{current.relative_humidity_2m}%</p>
+            <p className="text-2xl">
+              {current.relative_humidity_2m +
+                "" +
+                current_units.relative_humidity_2m}
+            </p>
           )}
         </div>
         <div className="bg-secondary p-4 rounded-lg space-y-4">
@@ -86,7 +135,9 @@ export default function CurrentWeatherDetails({ current, country, city }) {
             <div className="bg-white h-0.5 w-4 mt-10"></div>
           ) : (
             <p className="text-2xl">
-              {Math.round(Number(current.wind_speed_10m))} km/h
+              {ConvertUnitWind(Math.round(current.wind_speed_10m)) +
+                " " +
+                (unit.wind === "km/h" ? "Km/h" : "mp/h")}
             </p>
           )}
         </div>
@@ -96,7 +147,8 @@ export default function CurrentWeatherDetails({ current, country, city }) {
             <div className="bg-white h-0.5 w-4 mt-10"></div>
           ) : (
             <p className="text-2xl">
-              {Math.round(Number(current.precipitation))} mm
+              {ConvertUnitPrecipitation(Number(current.precipitation))}{" "}
+              {unit.precipitation === "mm" ? "mm" : "inch"}
             </p>
           )}
         </div>

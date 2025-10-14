@@ -2,13 +2,14 @@ import { Dropdown } from "antd";
 import getImage from "../helper/getImage";
 import { useLoading } from "../shared/LoadingContext";
 import { useState } from "react";
+import { useUnit } from "../shared/Unit";
 
 export default function HourlyWeather({ Hourly }) {
   //hour for current day  0 -> 23 : 24i
   //hour for next day 24i -> 24(i+1) - 1
 
   const { isLoading } = useLoading();
-
+  const { unit, nameUnit } = useUnit();
   const temps = Hourly.temperature_2m ? Array.from(Hourly.temperature_2m) : [];
   const times = Hourly?.time ? Array.from(Hourly.time) : [];
   const codes = Hourly.weather_code ? Array.from(Hourly.weather_code) : [];
@@ -71,7 +72,7 @@ export default function HourlyWeather({ Hourly }) {
       };
     });
   }
-  function getHourlyDay(indexDay) {
+  const getHourlyDay = (indexDay) => {
     let currentDay = 24 * indexDay;
     let nextDay = Math.min(24 * (indexDay + 1) - 1, times.length);
     let elements = [];
@@ -90,7 +91,7 @@ export default function HourlyWeather({ Hourly }) {
           <img src={getImage(el.icon)} className="size-15" alt="" />
           <p className="capitalize">{el.hour}</p>
         </div>
-        <p>{Math.round(Number(el.temp))}°</p>
+        <p>{ConvertUnitTemp(Number(el.temp))}°</p>
       </div>
     ));
     // const dayTimes = times.slice(currentDay, nextDay);
@@ -117,8 +118,18 @@ export default function HourlyWeather({ Hourly }) {
     //     </div>
     //   );
     // });
-  }
-
+  };
+  const ConvertUnitTemp = (unitValue) => {
+    if (unit.temp === "F") {
+      if (nameUnit === "imperial") return Math.floor(unitValue);
+      let temp = (unitValue * 9) / 5 + 32;
+      return Math.floor(Number(temp));
+    } else if (unit.temp === "C") {
+      if (nameUnit === "metric") return Math.floor(unitValue);
+      let temp = ((unitValue - 32) * 5) / 9;
+      return Math.floor(temp);
+    }
+  };
   if (isLoading) {
     return (
       <div className="lg:w-1/3 md:w-1/2 h-fit p-4 bg-secondary rounded-lg text-white space-y-7">
@@ -141,7 +152,7 @@ export default function HourlyWeather({ Hourly }) {
             return (
               <div
                 key={i}
-                className="flex justify-between items-center p-6 w-full bg-accent mr-2 rounded-lg"
+                className="flex justify-between items-center p-6 w-full bg-accent mr-2 rounded-lg animate-pulse"
               ></div>
             );
           })}

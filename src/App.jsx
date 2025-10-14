@@ -3,15 +3,18 @@ import Header from "./components/Header";
 import SearchSection from "./components/SearchSection";
 import WeatherSection from "./components/weatherSection";
 import { LoadingProvider } from "./shared/LoadingContext";
+import { UnitProvider } from "./shared/Unit";
 
 function App() {
   return (
     <div className="bg-background">
       <SkeletonTheme baseColor="#202020" highlightColor="#444">
         <LoadingProvider>
-          <Header />
-          <SearchSection />
-          <WeatherSection />
+          <UnitProvider>
+            <Header />
+            <SearchSection />
+            <WeatherSection />
+          </UnitProvider>
         </LoadingProvider>
       </SkeletonTheme>
     </div>
