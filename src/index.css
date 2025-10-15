@@ -83,3 +83,15 @@
 .ant-skeleton .ant-skeleton-image {
   @apply !w-full !h-full;
 }
+.city-select .stdropdown-tools,
+.stdropdown-tool {
+  -webkit-appearance: none; /* Chrome, Safari */
+  -moz-appearance: none; /* Firefox */
+  appearance: none; /* Standard */
+  background: transparent; /* إزالة الخلفية */
+  border: none; /* إزالة الحدود إذا أحببت */
+  padding-right: 0; /* إزالة المساحة المخصصة للأيقونة */
+  display: none;
+}
+.city-select select {
+}

@@ -1,5 +1,8 @@
 import axios from "axios";
-const getCurrentWeather = (data = { latitude: 0, longitude: 0 }, nameUnit) => {
+const getCurrentWeather = (
+  data = { latitude: 0, longitude: 0 },
+  nameUnit = "metric"
+) => {
   if (nameUnit === "imperial") {
     const temperature_unit = "fahrenheit";
     const wind_speed_unit = "mph";

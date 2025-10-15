@@ -85,7 +85,13 @@ export default function CurrentWeatherDetails({
           <div className="absolute p-6 w-full h-full top-0 flex flex-col items-center justify-around gap-6 sm:flex-row">
             <div className="text-center space-y-2 capitalize">
               <p className="text-2xl md:text-3xl font-semibold">
-                {city} , <span>{country}</span>
+                {city === null ? (
+                  <span>{country}</span>
+                ) : (
+                  <>
+                    {city} , <span>{country}</span>
+                  </>
+                )}
               </p>
               <p className="md:text-lg">{formatterUS.format(time)}</p>
             </div>
