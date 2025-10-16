@@ -41,12 +41,12 @@ export default function Weather() {
     } else {
       accessGeoLocationAPI().then((loc) => {
         setIsLoading(true);
-        const d = { latitude: loc.data.lat, longitude: loc.data.lon };
+        const d = { latitude: loc.lat, longitude: loc.long };
         getCurrentWeather(d, nameUnit)
           .then((data) => {
             setIsLoading(true);
-            setCity(loc.data.city);
-            setCountry(loc.data.country);
+            setCity(loc.city);
+            setCountry(loc.country);
             setCurrent(data.data.current);
             setCurrentUnit(data.data.current_units);
             setHourly(data.data.hourly);
