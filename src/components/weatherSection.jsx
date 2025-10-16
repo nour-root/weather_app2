@@ -24,7 +24,6 @@ export default function Weather() {
       const data = { latitude: geoLocation.lat, longitude: geoLocation.long };
       getCurrentWeather(data, nameUnit)
         .then((data) => {
-          console.log(geoLocation.city);
           setIsLoading(true);
           setCity(geoLocation.city);
           setCountry(geoLocation.country);
