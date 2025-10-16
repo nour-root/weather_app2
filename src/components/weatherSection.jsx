@@ -3,7 +3,7 @@ import CurrentWeatherDetails from "./CurrentWeatherDetails";
 import ForecastDailyWeather from "./ForecastDailyWeather";
 import HourlyWeather from "./HourlyWeather";
 import accessGeoLocationAPI from "../services/AccessGeolocationAPI";
-import getCurrentWeather from "../services/getCurrentWeather";
+import getCurrentWeather from "../services/GetCurrentWeather";
 import { useLoading } from "../shared/LoadingContext";
 import { useUnit } from "../shared/Unit";
 import { useGeoLocation } from "../shared/geolocation";
